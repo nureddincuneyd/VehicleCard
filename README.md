@@ -8,4 +8,4 @@
 
 ## Problems
 
-- Not set yet because version related error received
+- AutoMapper is not set yet because version related error is received
