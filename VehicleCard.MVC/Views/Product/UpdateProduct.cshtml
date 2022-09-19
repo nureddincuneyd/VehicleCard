@@ -1,0 +1,158 @@
+﻿@model IEnumerable<ModelAll>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>General Form</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">General Form</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Ürün Güncelle</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form>
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label for="proName">Ürün Resmi</label>
+                                        <img src="@item.rProduct.ProImgUrl" style="max-height:350px;" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="proName">Ürün Adı</label>
+                                        <input type="email" class="form-control" id="proName" value="@item.rProduct.ProName">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="proKG">Ürün Ağırlığı (KG)</label>
+                                        <input type="email" class="form-control" id="proKG" value="@item.rProduct.ProKG">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="proM3">Ürün Hacmi (M3)</label>
+                                        <input type="email" class="form-control" id="proM3" value="@item.rProduct.ProM3">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Ürün Resimi</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="fileUpload" onchange="uploadImage()">
+                                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Yükle</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                        <label class="form-check-label" for="exampleCheck1">Ürün Aktif Mi?</label>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary" onclick="save()">Kaydet</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
+<!-- Main content -->
+
+<script>
+    var fileURL = "";
+    function uploadImage() {
+        var files = $('#fileUpload').prop("files");
+        var url = "/Product/UploadFile?handler=MyUploader";
+        formData = new FormData();
+        formData.append("formFile", files[0]);
+
+        jQuery.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            success: function (repo) {
+                if (repo.status == "success") {
+                    //alert("File : " + JSON.parse(repo.proState) + " is uploaded successfully");
+                    fileURL = repo.proState
+                    console.log(fileURL);
+                }
+            },
+            error: function () {
+                alert("Error occurs");
+            }
+        });
+    }
+    function save() {
+        var product = {
+            'ProName': $('#proName').val(),
+            'ProKG': $('#proKG').val(),
+            'ProM3': $('#proM3').val(),
+            'ProImgUrl': null,
+            'Status': true
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Product/UpdatePro",
+            data: { pro: product, "imgName": fileURL },
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Ürün Kaydedildi!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload(true);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

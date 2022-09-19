@@ -14,4 +14,8 @@
     <ProjectReference Include="..\VehicleCard.MAP\VehicleCard.MAP.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

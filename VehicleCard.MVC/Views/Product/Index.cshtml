@@ -1,5 +1,125 @@
-﻿@*
+﻿@model IEnumerable<ModelAll>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Ürünler</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Blank Page</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ürünler</h3>
+                    </div>
+
+                    @if (Model != null)
+                    {
+
+                        @foreach (var item in Model)
+                        {
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Resim</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Ağırlık</th>
+                                            <th>Hacim</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (item.lProduct != null)
+                                        {
+                                            foreach (var pro in item.lProduct)
+                                            {
+
+                                                <tr>
+                                                    <td>@pro.Id</td>
+                                                    <td><img src="@pro.ProImgUrl" style="max-height:120px;" /> </td>
+                                                    <td>@pro.ProName</td>
+                                                    <td>@pro.ProKG</td>
+                                                    <td>@pro.ProM3</td>
+                                                    <td>
+                                                        <a href="/Product/UpdateProduct/@pro.Id" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                        <button class="btn btn-danger" onclick="delPro(@pro.Id)"><i class="fa-solid fa-trash-can"></i></button>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function delPro(id) {
+        Swal.fire({
+            title: 'Ürümü silmek istediğinize emin misiniz?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Evet, Sil',
+            denyButtonText: `Vazgeç`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Product/DeleteProduct",
+                    data: { 'id': id },
+                    success: function (response) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Ürün Silindi!!!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.reload(true);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            } else if (result.isDenied) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Ürün silinmedi.',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+    }
+</script>

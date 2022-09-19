@@ -4,6 +4,9 @@ using System.Linq.Expressions;
 using System;
 using VehicleCard.BLL.RepositoryPattern.Interfaces;
 using VehilceCard.ENT.Models;
+using System.Net;
+using System.Net.Http;
+using Unipluss.Sign.ExternalContract.Entities;
 
 namespace VehicleCard.API.Controllers
 {
@@ -39,7 +42,15 @@ namespace VehicleCard.API.Controllers
         public ActionResult GetById(int id)
         {
             var resp = _product.GetById(id);
-            return Ok(resp);
+            if (resp != null)
+            {
+                return Ok(resp);
+            }
+            else
+            {
+                return NotFound(id);
+            }
+            
         }
 
         [Route("Update")]
@@ -63,8 +74,8 @@ namespace VehicleCard.API.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var resp = _product.Delete(id);
-            return Ok(resp);
+            _product.Delete(id);
+            return Ok("Id'si " + id + "olan ürün silindi.");
         }
     }
 }
