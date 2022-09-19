@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System;
 using VehicleCard.BLL.RepositoryPattern.Interfaces;
 using VehilceCard.ENT.Models;
+using System.Collections.Generic;
 
 namespace VehicleCard.API.Controllers
 {
@@ -52,11 +53,14 @@ namespace VehicleCard.API.Controllers
 
         [Route("Create")]
         [HttpPost]
-        public ActionResult Create(ProductsWithVehicles pWv)
+        public ActionResult Create(List<ProductsWithVehicles> lPWv)
         {
-            pWv.Id = 0;
-            var resp = _proWtVeh.Create(pWv);
-            return Ok(resp);
+            foreach (var item in lPWv)
+            {
+                item.Id = 0;
+                _proWtVeh.Create(item);
+            }
+            return Ok();
         }
 
         [Route("Delete")]

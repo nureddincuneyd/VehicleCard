@@ -8,6 +8,7 @@ namespace VehilceCard.ENT.Models
 {
     public class ProductsWithVehicles:BaseEntity
     {
+        public int OperationNumber { get; set; }
         public int AvailableCapKG { get; set; }
         public int AvailableCapM3 { get; set; }
         public int VehiclesId { get; set; }

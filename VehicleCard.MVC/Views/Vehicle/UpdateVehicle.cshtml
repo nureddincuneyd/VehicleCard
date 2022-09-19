@@ -4,18 +4,16 @@
 *@
 @{
 }
-
-
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>General Form</h1>
+                <h1>Araç Güncelle</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">General Form</li>
+                    <li class="breadcrumb-item active">Araç Güncelle</li>
                 </ol>
             </div>
         </div>
@@ -26,6 +24,7 @@
     foreach (var item in Model)
     {
 
+        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -34,35 +33,49 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Ürün Güncelle</h3>
+                                <h3 class="card-title">@item.rVehicle.Plate</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
                             <form>
                                 <div class="card-body">
-
                                     <div class="form-group">
-                                        <label for="proName">Ürün Resmi</label>
-                                        <img src="@item.rProduct.ProImgUrl" style="max-height:350px;" />
+                                        <label for="proName">Araç Resmi</label>
+                                        <img src="@item.rVehicle.VehicleImgUrl" style="max-height:350px;" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="proName">Araç Plakası</label>
+                                        <input type="text" class="form-control" id="vhlPlate" value="@item.rVehicle.Plate">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="proName">Ürün Adı</label>
-                                        <input type="email" class="form-control" id="proName" value="@item.rProduct.ProName">
+                                        <label for="proKG">Lokasyon</label>
+                                        <input type="text" class="form-control" id="vhlLoc" value="@item.rVehicle.Location">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="proKG">Ürün Ağırlığı (KG)</label>
-                                        <input type="email" class="form-control" id="proKG" value="@item.rProduct.ProKG">
+                                        <label>Marka & Model</label>
+                                        <select class="form-control select2" style="width: 100%;" id="brnMdl">
+                                            @foreach (var mdl in item.lModel)
+                                            {
+                                                if (mdl.Status == true)
+                                                {
+                                                    if (item.rVehicle.vModelId == mdl.Id)
+                                                    {
+                                                        <option value="@mdl.Id" selected>@mdl.BrandName - @mdl.ModelName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@mdl.Id">@mdl.BrandName - @mdl.ModelName</option>
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="proM3">Ürün Hacmi (M3)</label>
-                                        <input type="email" class="form-control" id="proM3" value="@item.rProduct.ProM3">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Ürün Resimi</label>
+                                        <label for="exampleInputFile">Araç Resimi</label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="fileUpload" onchange="uploadImage()">
@@ -74,14 +87,19 @@
                                         </div>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Ürün Aktif Mi?</label>
+                                        @if (item.rVehicle.Status == true)
+                                        {
+                                            <input type="checkbox" class="form-check-input" id="state" checked>
+                                        }else{
+                                            <input type="checkbox" class="form-check-input" id="state">
+                                        }
+                                        <label class="form-check-label" for="exampleCheck1">Araç Aktif Mi?</label>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary" onclick="save(@item.rProduct.Id)">Kaydet</button>
+                                    <button type="submit" class="btn btn-primary" onclick="save()">Kaydet</button>
                                 </div>
                             </form>
                         </div>
@@ -90,15 +108,15 @@
                 </div>
             </div>
         </section>
+
+
     }
 }
-<!-- Main content -->
-
 <script>
     var fileURL = "";
     function uploadImage() {
         var files = $('#fileUpload').prop("files");
-        var url = "/Product/UploadFile?handler=MyUploader";
+        var url = "/Vehicle/UploadFile?handler=MyUploader";
         formData = new FormData();
         formData.append("formFile", files[0]);
 
@@ -125,24 +143,30 @@
             }
         });
     }
-    function save(id) {
-        var product = {
-            'Id': id,
-            'ProName': $('#proName').val(),
-            'ProKG': $('#proKG').val(),
-            'ProM3': $('#proM3').val(),
+    function save() {
+        var checkBox = document.getElementById('state');
+        var state;
+        if (checkBox.checked) {
+            state = true;
+        } else {
+            state = false;
+        }
+        var vehicle = {
+            'Plate': $('#vhlPlate').val(),
+            'Location': $('#vhlLoc').val(),
+            'vModelId': $('#brnMdl').val(),
             'ProImgUrl': null,
-            'Status': true
+            'Status': state
         }
         $.ajax({
             type: "POST",
-            url: "/Product/UpdatePro",
-            data: { pro: product, "imgName": fileURL },
+            url: "/Vehicle/UpdateVhl",
+            data: { vhl: vehicle, "imgName": fileURL },
             success: function (response) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Ürün Kaydedildi!',
+                    title: 'Araç Kaydedildi!',
                     showConfirmButton: false,
                     timer: 1500
                 })

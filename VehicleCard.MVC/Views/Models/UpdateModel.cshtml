@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ModelAll>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>General Form</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">General Form</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Ürün Güncelle</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="proName">Marka Adı</label>
+                                        <input type="email" class="form-control" id="brndName" value="@item.rModel.BrandName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="proName">Model Adı</label>
+                                        <input type="email" class="form-control" id="mdlName" value="@item.rModel.ModelName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="proM3">Marka&Model Ağırlık (KG)</label>
+                                        <input type="email" class="form-control" id="mdlKG" value="@item.rModel.CapacityKG">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="proM3">Marka&Model Hacmi (M3)</label>
+                                        <input type="email" class="form-control" id="mdlM3" value="@item.rModel.CapacityM3">
+                                    </div>
+                                    <div class="form-check">
+                                        @if (item.rModel.Status == true)
+                                        {
+                                            <input type="checkbox" class="form-check-input" id="state" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="form-check-input" id="state">
+                                        }
+                                        <label class="form-check-label" for="exampleCheck1">Ürün Aktif Mi?</label>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary" onclick="save(@item.rModel.Id)">Kaydet</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
+<!-- Main content -->
+
+<script>
+   
+    function save(id) {
+        var model = {
+            'Id': id,
+            'BrandName': $('#brndName').val(),
+            'ModelName': $('#mdlName').val(),
+            'CapacityKG': $('#mdlM3').val(),
+            'CapacityM3': $('#mdlM3').val(),
+            'Status': $('#state').val()
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Models/UpdateMdl",
+            data: model,
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Marka&Model Kaydedildi!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload(true);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

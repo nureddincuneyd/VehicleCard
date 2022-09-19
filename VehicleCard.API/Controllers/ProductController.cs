@@ -6,7 +6,6 @@ using VehicleCard.BLL.RepositoryPattern.Interfaces;
 using VehilceCard.ENT.Models;
 using System.Net;
 using System.Net.Http;
-using Unipluss.Sign.ExternalContract.Entities;
 
 namespace VehicleCard.API.Controllers
 {

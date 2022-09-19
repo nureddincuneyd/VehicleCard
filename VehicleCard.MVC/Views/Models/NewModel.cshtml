@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Marka&Model Ekle</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Marka&Model Ekle</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Marka&Model Ekle</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="proName">Marka Adı</label>
+                                <input type="email" class="form-control" id="brndName">
+                            </div>
+                            <div class="form-group">
+                                <label for="proName">Model Adı</label>
+                                <input type="email" class="form-control" id="mdlName">
+                            </div>
+                            <div class="form-group">
+                                <label for="proM3">Marka&Model Hacmi (KG)</label>
+                                <input type="email" class="form-control" id="mdlKG">
+                            </div>
+                            <div class="form-group">
+                                <label for="proM3">Marka&Model Hacmi (M3)</label>
+                                <input type="email" class="form-control" id="mdlM3">
+                            </div>
+
+                            
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Aktif Mi?</label>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary" onclick="save()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function save() {
+        var model = {
+            'BrandName': $('#brndName').val(),
+            'ModelName': $('#mdlName').val(),
+            'CapacityKG': $('#mdlM3').val(),
+            'CapacityM3': $('#mdlM3').val(),
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Models/CreateModel",
+            data: model,
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Marka&Model Kaydedildi!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload(true);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

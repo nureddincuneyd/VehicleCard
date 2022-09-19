@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Blank Page</title>
+    <title>VehicleCard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -13,6 +13,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
@@ -159,7 +160,7 @@
             <!-- Brand Logo -->
             <a href="../../index3.html" class="brand-link">
                 <img src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">VehicleCard</span>
             </a>
 
             <!-- Sidebar -->
@@ -215,10 +216,56 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="../widgets.html" class="nav-link">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Marka&Model Yönetimi
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Models/Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Marka&Model Listesi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Models/NewModel" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Marka&Model Ekle</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Araç Yönetimi
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Vehicle/Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Araç Listesi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Vehicle/NewVehicle" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Araç Ekle</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/ProductWithVehicle/Index" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Widgets
+                                    Araç Yükleme
                                     <span class="right badge badge-danger">New</span>
                                 </p>
                             </a>

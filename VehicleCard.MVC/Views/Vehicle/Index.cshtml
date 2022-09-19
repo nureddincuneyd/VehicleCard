@@ -9,12 +9,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Ürünler</h1>
+                <h1>Araçlar</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Blank Page</li>
+                    <li class="breadcrumb-item active">Araçlar</li>
                 </ol>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Ürünler</h3>
+                        <h3 class="card-title">Araçlar</h3>
                     </div>
 
                     @if (Model != null)
@@ -42,27 +42,33 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Resim</th>
-                                            <th>Ürün Adı</th>
-                                            <th>Ağırlık</th>
-                                            <th>Hacim</th>
+                                            <th>Plaka</th>
+                                            <th>Lokasyon</th>
+                                            <th>Marka</th>
+                                            <th>Model</th>
+                                            <th>Kapasite (KG)</th>
+                                            <th>Kapasite (M3)</th>
                                             <th>İşlem</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (item.lProduct != null)
+                                        @if (item.lVehicle != null)
                                         {
-                                            foreach (var pro in item.lProduct)
+                                            foreach (var vhl in item.lVehicle)
                                             {
 
                                                 <tr>
-                                                    <td>@pro.Id</td>
-                                                    <td><img src="@pro.ProImgUrl" style="max-height:120px;" /> </td>
-                                                    <td>@pro.ProName</td>
-                                                    <td>@pro.ProKG</td>
-                                                    <td>@pro.ProM3</td>
+                                                    <td>@vhl.Id</td>
+                                                    <td><img src="@vhl.VehicleImgUrl" style="max-height:120px;" /></td>
+                                                    <td>@vhl.Plate</td>
+                                                    <td>@vhl.Location</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).BrandName</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).ModelName</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).CapacityKG</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).CapacityM3</td>
                                                     <td>
-                                                        <a href="/Product/UpdateProduct/@pro.Id" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
-                                                        <button class="btn btn-danger" onclick="delPro(@pro.Id)"><i class="fa-solid fa-trash-can"></i></button>
+                                                        <a href="/Vehicle/UpdateVehicle/@vhl.Id" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                        <button class="btn btn-danger" onclick="delMdl(@vhl.Id)"><i class="fa-solid fa-trash-can"></i></button>
                                                     </td>
                                                 </tr>
                                             }
@@ -80,9 +86,9 @@
     </div>
 </section>
 <script>
-    function delPro(id) {
+    function delMdl(id) {
         Swal.fire({
-            title: 'Ürünü silmek istediğinize emin misiniz?',
+            title: 'Araç silmek istediğinize emin misiniz?',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Evet, Sil',
@@ -92,13 +98,13 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: "/Product/DeleteProduct",
+                    url: "/Vehicle/DeleteVehicle",
                     data: { 'id': id },
                     success: function (response) {
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
-                            title: 'Ürün Silindi!!!',
+                            title: 'Araç Silindi!!!',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -115,7 +121,7 @@
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Ürün silinmedi.',
+                    title: 'Araç silinmedi.',
                     showConfirmButton: false,
                     timer: 1500
                 })

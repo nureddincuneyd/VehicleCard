@@ -1,0 +1,265 @@
+﻿@model IEnumerable<ModelAll>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Araç Ürün Yükleme</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Araç Ürün Yükleme</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@if (Model != null)
+{
+
+    @foreach (var item in Model)
+    {
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-6">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Araçlar</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Plaka</th>
+                                            <th>Lokasyon</th>
+                                            <th>Marka</th>
+                                            <th>Model</th>
+                                            <th>Kapasite (KG)</th>
+                                            <th>Kapasite (M3)</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (item.lVehicle != null)
+                                        {
+                                            foreach (var vhl in item.lVehicle)
+                                            {
+
+                                                <tr>
+                                                    <td>@vhl.Id</td>
+                                                    <td>@vhl.Plate</td>
+                                                    <td>@vhl.Location</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).BrandName</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).ModelName</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).CapacityKG</td>
+                                                    <td>@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).CapacityM3</td>
+                                                    <td>
+                                                        <button class="btn btn-primary" onclick="selectVhl(@vhl.Id,@item.lModel.FirstOrDefault(x=>x.Id == vhl.vModelId).CapacityKG, '@vhl.Plate')"><i class="fa-regular fa-square-plus"></i></button>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Ürünler</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Ürün Resmi</th>
+                                            <th>Ürün KG</th>
+                                            <th>Ürün M3</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (item.lProduct != null)
+                                        {
+                                            foreach (var pro in item.lProduct)
+                                            {
+
+                                                <tr>
+                                                    <td>@pro.Id</td>
+                                                    <td><img src="@pro.ProImgUrl" style="max-height:85px;" /></td>
+                                                    <td>@pro.ProName</td>
+                                                    <td>@pro.ProKG</td>
+                                                    <td>@pro.ProM3</td>
+                                                    <td>
+                                                        <button class="btn btn-primary" onclick="selectPro(@pro.Id,'@pro.ProImgUrl.ToString()',@pro.ProKG,'@pro.ProName.ToString()')"><i class="fa-regular fa-square-plus"></i></button>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
+
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Araç : <span id="oprPlate"></span>  || Kapasite : <span id="oprCap"></span></h3>
+                        <button class="btn btn-primary" onclick="saveOperation()">Kaydet</button>
+                    </div>
+
+                    @if (Model != null)
+                    {
+
+                        @foreach (var item in Model)
+                        {
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Plaka</th>
+                                            <th>Ürün Resmi</th>
+                                            <th>Ürün Adı</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appTable">
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        Swal.fire({
+            title: 'İlk Araç Seçip, Ürünleri Sonrasında Seçmelisiniz!!!',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        })
+    });
+
+    const vhlWthPro = new Array();
+    var slcVehicleId, slcVehicleCap, vhlPlt;
+    const VEHICLES = [];
+    const PRODUCTS = [];
+
+    function selectVhl(id, vhlCap, plt) {
+        slcVehicleId = id;
+        slcVehicleCap = vhlCap;
+        vhlPlt = plt
+        document.getElementById('oprPlate').innerText = plt;
+    }
+
+    function selectPro(id, imgPro, proKg, proName) {
+        if ((slcVehicleCap - proKg) > 0) {
+            slcVehicleCap = slcVehicleCap - proKg;
+
+
+            var newObject = {
+                "arac": slcVehicleId,
+                "aracPlt": vhlPlt,
+                "urun": id,
+                "urunImg": imgPro,
+                "urunAdi": proName,
+                "availableCapKg": slcVehicleCap
+            };
+            document.getElementById('oprCap').innerHTML = "";
+            document.getElementById('oprCap').innerHTML = slcVehicleCap;
+
+            vhlWthPro.push(newObject);
+            console.log(vhlWthPro);
+            var html = "<tr><td>" + vhlWthPro[vhlWthPro.length - 1].aracPlt + "</td><td><img src='" +
+                vhlWthPro[vhlWthPro.length - 1].urunImg + "' style='max-height:150px;'/></td><td>" +
+                vhlWthPro[vhlWthPro.length - 1].urunAdi + "</td></tr>";
+            document.getElementById('appTable').innerHTML += html;
+
+
+
+
+        } else {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Araç Kapasitesini Aşamazsınız!!!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    }
+
+    function saveOperation(){
+        
+        $.ajax({
+            type: "POST",
+            url: "/ProductWithVehicle/AddOperation",
+            data: { "request": JSON.stringify(vhlWthPro) },
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Ürün Kaydedildi!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload(true);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+
+</script>

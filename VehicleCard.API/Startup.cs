@@ -34,7 +34,7 @@ namespace VehicleCard.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("localServer")));
+            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("publishSQL")));
             
             services.AddScoped<IRepository<AppUser>, Repository<AppUser>>();
             services.AddScoped<IRepository<Model>, Repository<Model>>();
