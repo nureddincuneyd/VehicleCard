@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VehicleCard.DAL\VehicleCard.DAL.csproj" />
+    <ProjectReference Include="..\VehilceCard.ENT\VehilceCard.ENT.csproj" />
+  </ItemGroup>
+
+</Project>
