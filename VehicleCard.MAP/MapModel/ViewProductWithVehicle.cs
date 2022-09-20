@@ -9,6 +9,7 @@ namespace VehicleCard.MAP.MapModel
     public class ViewProductWithVehicle : IViewBase
     {
         public int Id { get; set; }
+        public int OperationNumber { get; set; }
         public int AvailableCapKG { get; set; }
         public int AvailableCapM3 { get; set; }
         public int VehiclesId { get; set; }

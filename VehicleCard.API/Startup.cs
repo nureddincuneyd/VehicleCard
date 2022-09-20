@@ -42,19 +42,19 @@ namespace VehicleCard.API
             services.AddScoped<IRepository<Product>, Repository<Product>>();
             services.AddScoped<IRepository<ProductsWithVehicles>, Repository<ProductsWithVehicles>>();
 
-
-
             services.AddSingleton<IViewBase, ViewProduct>();
             services.AddSingleton<IViewBase, ViewVehicle>();
             services.AddSingleton<IViewBase, ViewProductWithVehicle>();
             services.AddSingleton<IViewBase, ViewModel>();
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AllMapping());
-            });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            //var mappingConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new AllMapping());
+            //});
+            //IMapper mapper = mappingConfig.CreateMapper();
+            //services.AddSingleton(mapper);
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
             

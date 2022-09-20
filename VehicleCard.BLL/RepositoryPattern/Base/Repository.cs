@@ -14,7 +14,7 @@ namespace VehicleCard.BLL.RepositoryPattern.Base
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        MyContext _context;
+        readonly MyContext _context;
         protected DbSet<T> _table;
         public Repository(MyContext db)
         {
