@@ -3,7 +3,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    
+
 }
 
 <!-- Content Header (Page header) -->
@@ -53,17 +53,17 @@
                                     <tbody>
                                         @if (item.lProductsWithVehicles != null)
                                         {
-                                            foreach (var opr in item.lProductsWithVehicles.GroupBy(x=>x.OperationName).ToList())
+                                            foreach (var opr in item.lProductsWithVehicles)
                                             {
 
                                                 <tr>
-                                                    <td>@opr.FirstOrDefault().Id</td>
-                                                    <td>@item.lVehicle.FirstOrDefault(x => x.Id == opr.FirstOrDefault().VehiclesId).Plate</td>
-                                                    <td>@item.lModel.FirstOrDefault(y => y.Id == item.lVehicle.FirstOrDefault(x => x.Id == opr.FirstOrDefault().VehiclesId).vModelId).ModelName</td>
+                                                    <td>@opr.Id</td>
+                                                    <td>@item.lVehicle.FirstOrDefault(x => x.Id == opr.VehiclesId).Plate</td>
+                                                    <td>@item.lModel.FirstOrDefault(y => y.Id == item.lVehicle.FirstOrDefault(x => x.Id == opr.VehiclesId).vModelId).ModelName</td>
                                                     <td>@item.lProductsWithVehicles.OrderByDescending(x => x.Id).FirstOrDefault().AvailableCapKG</td>
-                                                    <td>@opr.FirstOrDefault().OperationName</td>
+                                                    <td>@opr.OperationName</td>
                                                     <td>
-                                                        <button class="btn btn-danger" onclick="delMdl(@opr.FirstOrDefault().OperationName)"><i class="fa-solid fa-trash-can"></i></button>
+                                                        <button class="btn btn-danger" onclick="delOpr('@opr.OperationName',@opr.Id)"><i class="fa-solid fa-trash-can"></i></button>
                                                     </td>
                                                 </tr>
                                             }
@@ -81,9 +81,9 @@
     </div>
 </section>
 <script>
-    function delMdl(id) {
+    function delOpr(oprName, id) {
         Swal.fire({
-            title: 'Marka&Model silmek istediğinize emin misiniz?',
+            title: oprName + ' silmek istediğinize emin misiniz?',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Evet, Sil',
@@ -93,13 +93,13 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: "/Models/DeleteModel",
+                    url: "/ProductWithVehicle/DeleteOpr",
                     data: { 'id': id },
                     success: function (response) {
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
-                            title: 'Marka&Model Silindi!!!',
+                            title: 'Operasyon Silindi!!!',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -116,7 +116,7 @@
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Marka&Model silinmedi.',
+                    title: 'Operasyon silinmedi.',
                     showConfirmButton: false,
                     timer: 1500
                 })

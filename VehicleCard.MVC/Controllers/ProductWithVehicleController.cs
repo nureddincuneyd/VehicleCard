@@ -116,5 +116,20 @@ namespace VehicleCard.MVC.Controllers
             });
             return View(mdlAll);
         }
+
+        public JsonResult DeleteOpr(int id)
+        {
+
+            ServiceMethod service = new ServiceMethod();
+            var resp = service.DeleteOperation(id);
+            if (resp.IsSuccessful)
+            {
+                return Json(Ok());
+            }
+            else
+            {
+                return Json(BadRequest());
+            }
+        }
     }
 }

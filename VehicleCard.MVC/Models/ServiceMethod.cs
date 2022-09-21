@@ -175,9 +175,17 @@ namespace VehicleCard.MVC.Models
         }
         public IRestResponse GetAllOperations()
         {
-            var client = new RestClient(apiURL + "/ProductWithVehicles/GetAll");
+            var client = new RestClient(apiURL + "/ProductsWithVehicles/GetAll");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
+            var response = client.Execute(request);
+            return response;
+        }
+        public IRestResponse DeleteOperation(int id)
+        {
+            var client = new RestClient(apiURL + "/ProductsWithVehicles/Delete?id=" + id);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
             var response = client.Execute(request);
             return response;
         }
