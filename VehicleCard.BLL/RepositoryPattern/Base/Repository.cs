@@ -61,5 +61,12 @@ namespace VehicleCard.BLL.RepositoryPattern.Base
             Save();
             return entity;
         }
+
+        public List<T> CreateRange(List<T> lEntity)
+        {
+            _table.AddRangeAsync(lEntity);
+            Save();
+            return lEntity;
+        }
     }
 }

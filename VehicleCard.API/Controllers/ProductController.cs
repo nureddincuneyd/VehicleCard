@@ -6,6 +6,9 @@ using VehicleCard.BLL.RepositoryPattern.Interfaces;
 using VehilceCard.ENT.Models;
 using System.Net;
 using System.Net.Http;
+using System.Collections.Generic;
+using VehicleCard.MAP.MapModel;
+using AutoMapper;
 
 namespace VehicleCard.API.Controllers
 {
@@ -15,16 +18,19 @@ namespace VehicleCard.API.Controllers
     {
 
         readonly IRepository<Product> _product;
-        public ProductController(IRepository<Product> product)
+        private readonly IMapper _mapper;
+
+        public ProductController(IRepository<Product> product,IMapper mapper)
         {
             _product = product;
+            _mapper = mapper;
         }
 
         [Route("GetAll")]
         [HttpGet]
         public ActionResult GetAll()
         {
-            var resp = _product.GetAll();
+            var resp = _mapper.Map<IEnumerable<ViewProduct>>(_product.GetAll());
             return Ok(resp);
         }
 
@@ -32,7 +38,7 @@ namespace VehicleCard.API.Controllers
         [HttpPost]
         public ActionResult GetByFilter(Expression<Func<Product, bool>> exp)
         {
-            var resp = _product.GetByFilter(exp);
+            var resp = _mapper.Map<IEnumerable<ViewProduct>>(_product.GetByFilter(exp));
             return Ok(resp);
         }
 
@@ -40,7 +46,7 @@ namespace VehicleCard.API.Controllers
         [HttpPost]
         public ActionResult GetById(int id)
         {
-            var resp = _product.GetById(id);
+            var resp = _mapper.Map<ViewProduct>(_product.GetById(id));
             if (resp != null)
             {
                 return Ok(resp);
@@ -54,18 +60,18 @@ namespace VehicleCard.API.Controllers
 
         [Route("Update")]
         [HttpPost]
-        public ActionResult Update(Product prd)
+        public ActionResult Update(ViewProduct prd)
         {
-            var resp = _product.Update(prd);
+            var resp = _product.Update(_mapper.Map<Product>(prd));
             return Ok(resp);
         }
 
         [Route("Create")]
         [HttpPost]
-        public ActionResult Create(Product prd)
+        public ActionResult Create(ViewProduct prd)
         {
             prd.Id = 0;
-            var resp = _product.Create(prd);
+            var resp = _product.Create(_mapper.Map<Product>(prd));
             return Ok(resp);
         }
 
@@ -74,7 +80,7 @@ namespace VehicleCard.API.Controllers
         public ActionResult Delete(int id)
         {
             _product.Delete(id);
-            return Ok("Id'si " + id + "olan ürün silindi.");
+            return Ok("Id'si " + id + " olan ürün silindi.");
         }
     }
 }

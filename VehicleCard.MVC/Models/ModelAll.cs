@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
+using VehicleCard.MAP.MapModel;
 using VehilceCard.ENT.Models;
 
 namespace VehicleCard.MVC.Models
 {
     public class ModelAll
     {
-        public Model rModel { get; set; }
-        public Product rProduct { get; set; }
-        public ProductsWithVehicles rProductsWithVehicles { get; set; }
-        public Vehicle rVehicle { get; set; }
+        public ViewModel rModel { get; set; }
+        public ViewProduct rProduct { get; set; }
+        public ViewProductWithVehicle rProductsWithVehicles { get; set; }
+        public ViewVehicle rVehicle { get; set; }
 
 
-        public List<Model> lModel { get; set; }
-        public List<Product> lProduct { get; set; }
-        public List<ProductsWithVehicles> lProductsWithVehicles { get; set; }
-        public List<Vehicle> lVehicle { get; set; }
+        public List<ViewModel> lModel { get; set; }
+        public List<ViewProduct> lProduct { get; set; }
+        public List<ViewProductWithVehicle> lProductsWithVehicles { get; set; }
+        public List<ViewVehicle> lVehicle { get; set; }
 
 
     }

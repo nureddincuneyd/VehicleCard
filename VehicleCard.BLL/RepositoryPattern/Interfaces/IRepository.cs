@@ -16,5 +16,6 @@ namespace VehicleCard.BLL.RepositoryPattern.Interfaces
         T Update(T entity);
         T Delete(int id);
         List<T> GetByFilter(Expression<Func<T, bool>> exp);
+        List<T> CreateRange(List<T> lEntity);
     }
 }

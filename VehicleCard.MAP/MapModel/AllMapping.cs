@@ -12,17 +12,17 @@ namespace VehicleCard.MAP.MapModel
     {
         public AllMapping()
         {
-            //CreateMap<Product, ViewProduct>();
-            //CreateMap<Model, ViewModel>();
-            //CreateMap<ProductsWithVehicles, ViewProductWithVehicle>();
-            //CreateMap<Vehicle, ViewVehicle>();
-
-
-            CreateMap<ViewProduct,Product>();
             CreateMap<ViewModel, Model>();
-            CreateMap<List<ViewModel>, List<Model>>();
-            CreateMap<ViewProductWithVehicle,ProductsWithVehicles>();
-            CreateMap<ViewVehicle,Vehicle>();
+            CreateMap<Model, ViewModel>();
+
+            CreateMap<ViewProduct, Product>();
+            CreateMap<Product, ViewProduct>();
+
+            CreateMap<ProductsWithVehicles, ViewProductWithVehicle>();
+            CreateMap<ViewProductWithVehicle, ProductsWithVehicles>();
+
+            CreateMap<Vehicle, ViewVehicle>();
+            CreateMap<ViewVehicle, Vehicle>();
         }
 
     }

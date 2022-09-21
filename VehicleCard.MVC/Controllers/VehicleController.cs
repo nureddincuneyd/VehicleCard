@@ -7,6 +7,7 @@ using System.IO;
 using System;
 using VehicleCard.MVC.Models;
 using VehilceCard.ENT.Models;
+using VehicleCard.MAP.MapModel;
 
 namespace VehicleCard.MVC.Controllers
 {
@@ -23,13 +24,13 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetAllVehicle();
-            List<Vehicle> lVehicle = new List<Vehicle>();
+            List<ViewVehicle> lVehicle = new List<ViewVehicle>();
             var respMdl = service.GetAllModel();
-            List<Model> lModel = new List<Model>();
+            List<ViewModel> lModel = new List<ViewModel>();
             if (resp.Content != null && respMdl.Content != null)
             {
-                lVehicle = JsonConvert.DeserializeObject<List<Vehicle>>(resp.Content);
-                lModel = JsonConvert.DeserializeObject<List<Model>>(respMdl.Content);
+                lVehicle = JsonConvert.DeserializeObject<List<ViewVehicle>>(resp.Content);
+                lModel = JsonConvert.DeserializeObject<List<ViewModel>>(respMdl.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -73,10 +74,10 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetAllModel();
-            List<Model> lModel = new List<Model>();
+            List<ViewModel> lModel = new List<ViewModel>();
             if (resp.Content != null)
             {
-                lModel = JsonConvert.DeserializeObject<List<Model>>(resp.Content);
+                lModel = JsonConvert.DeserializeObject<List<ViewModel>>(resp.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -85,7 +86,7 @@ namespace VehicleCard.MVC.Controllers
             return View(mdlAll);
         }
 
-        public JsonResult CreateVehicle(Vehicle vhl, string imgName)
+        public JsonResult CreateVehicle(ViewVehicle vhl, string imgName)
         {
             ServiceMethod service = new ServiceMethod();
             vhl.VehicleImgUrl = uploadPath + imgName;
@@ -104,13 +105,13 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetByIdVehicle(id);
-            Vehicle rVehicles = new Vehicle();
+            ViewVehicle rVehicles = new ViewVehicle();
             var respMdl = service.GetAllModel();
-            List<Model> lModel = new List<Model>();
+            List<ViewModel> lModel = new List<ViewModel>();
             if (resp.Content != null && respMdl.Content != null)
             {
-                rVehicles = JsonConvert.DeserializeObject<Vehicle>(resp.Content);
-                lModel = JsonConvert.DeserializeObject<List<Model>>(respMdl.Content);
+                rVehicles = JsonConvert.DeserializeObject<ViewVehicle>(resp.Content);
+                lModel = JsonConvert.DeserializeObject<List<ViewModel>>(respMdl.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -121,7 +122,7 @@ namespace VehicleCard.MVC.Controllers
             return View(mdlAll);
         }
 
-        public JsonResult UpdateVhl(Vehicle vhl, string imgName)
+        public JsonResult UpdateVhl(ViewVehicle vhl, string imgName)
         {
             ServiceMethod service = new ServiceMethod();
             if (vhl.VehicleImgUrl != (uploadPath + imgName))

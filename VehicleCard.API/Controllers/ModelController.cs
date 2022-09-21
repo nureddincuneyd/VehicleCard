@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Security.Cryptography;
 using VehicleCard.BLL.RepositoryPattern.Interfaces;
 using VehicleCard.MAP.MapModel;
 using VehilceCard.ENT.Models;
@@ -16,10 +14,12 @@ namespace VehicleCard.API.Controllers
     public class ModelController : ControllerBase
     {
         readonly IRepository<Model> _model;
-        //private readonly IMapper _mapper;
-        public ModelController(IRepository<Model> model)
+        private readonly IMapper _mapper;
+        public ModelController(IRepository<Model> model, IMapper mapper)
         {
             _model = model;
+            _mapper = mapper;
+
         }
 
         [Route("GetAll")]
@@ -28,7 +28,7 @@ namespace VehicleCard.API.Controllers
         {
             try
             {
-                var resp = _model.GetAll();
+                var resp = _mapper.Map<IEnumerable<ViewModel>>(_model.GetAll());
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace VehicleCard.API.Controllers
         {
             try
             {
-                var resp = _model.GetByFilter(exp);
+                var resp = _mapper.Map<IEnumerable<ViewModel>>(_model.GetByFilter(exp));
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace VehicleCard.API.Controllers
 
             try
             {
-                var resp = _model.GetById(id);
+                var resp = _mapper.Map<ViewModel>(_model.GetById(id));
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -71,11 +71,11 @@ namespace VehicleCard.API.Controllers
 
         [Route("Update")]
         [HttpPost]
-        public ActionResult Update(Model mdl)
+        public ActionResult Update(ViewModel mdl)
         {
             try
             {
-                var resp = _model.Update(mdl);
+                var resp = _model.Update(_mapper.Map<Model>(mdl));
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -86,12 +86,12 @@ namespace VehicleCard.API.Controllers
 
         [Route("Create")]
         [HttpPost]
-        public ActionResult Create(Model mdl)
+        public ActionResult Create(ViewModel mdl)
         {
             try
             {
                 mdl.Id = 0;
-                var resp = _model.Create(mdl);
+                var resp = _model.Create(_mapper.Map<Model>(mdl));
                 return Ok(resp);
             }
             catch (Exception ex)

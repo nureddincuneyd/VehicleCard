@@ -188,7 +188,7 @@
     });
 
     const vhlWthPro = new Array();
-    var slcVehicleId, slcVehicleCap, vhlPlt;
+    var slcVehicleId, slcVehicleCap, vhlPlt, oprName;
     const VEHICLES = [];
     const PRODUCTS = [];
 
@@ -197,6 +197,30 @@
         slcVehicleCap = vhlCap;
         vhlPlt = plt
         document.getElementById('oprPlate').innerText = plt;
+    }
+
+    function insert(oName) {
+        $.ajax({
+            type: "POST",
+            url: "/ProductWithVehicle/AddOperation",
+            data: { "request": JSON.stringify(vhlWthPro), "oprName": oName },
+            success: function (response) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Ürün Kaydedildi!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload(true);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
     }
 
     function selectPro(id, imgPro, proKg, proName) {
@@ -236,30 +260,50 @@
         }
     }
 
-    function saveOperation(){
+    function saveOperation() {
         
-        $.ajax({
-            type: "POST",
-            url: "/ProductWithVehicle/AddOperation",
-            data: { "request": JSON.stringify(vhlWthPro) },
-            success: function (response) {
+        Swal.fire({
+            title: 'Operasyona bir isim verin',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Kaydet',
+            cancelButtonText: 'İptal',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`//api.github.com/users/${login}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                console.log("Operasyon Kaydedildi!!");
+
+                console.log(oprName);
+                oprName = result.value.login;
+                insert(oprName);
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Ürün Kaydedildi!',
+                    title: 'Operasyon Kaydedildi!',
                     showConfirmButton: false,
                     timer: 1500
                 })
-                window.location.reload(true);
-            },
-            failure: function (response) {
-                alert(response.responseText);
-            },
-            error: function (response) {
-                alert(response.responseText);
             }
-        });
+        })
     }
-
 
 </script>

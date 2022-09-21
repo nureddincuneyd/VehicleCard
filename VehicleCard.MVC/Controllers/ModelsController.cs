@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using VehicleCard.MAP.MapModel;
 using VehicleCard.MVC.Models;
 using VehilceCard.ENT.Models;
 
@@ -24,10 +22,10 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetAllModel();
-            List<Model> lModel = new List<Model>();
+            List<ViewModel> lModel = new List<ViewModel>();
             if (resp.Content != null)
             {
-                lModel = JsonConvert.DeserializeObject<List<Model>>(resp.Content);
+                lModel = JsonConvert.DeserializeObject<List<ViewModel>>(resp.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -56,7 +54,7 @@ namespace VehicleCard.MVC.Controllers
         }
         //CreateModel
 
-        public JsonResult CreateModel(Model mdl)
+        public JsonResult CreateModel(ViewModel mdl)
         {
             ServiceMethod service = new ServiceMethod();
             
@@ -75,10 +73,10 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetByIdModel(id);
-            Model rModel = new Model();
+            ViewModel rModel = new ViewModel();
             if (resp.Content != null)
             {
-                rModel = JsonConvert.DeserializeObject<Model>(resp.Content);
+                rModel = JsonConvert.DeserializeObject<ViewModel>(resp.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -88,7 +86,7 @@ namespace VehicleCard.MVC.Controllers
             return View(mdlAll);
         }
 
-        public JsonResult UpdateMdl(Model mdl)
+        public JsonResult UpdateMdl(ViewModel mdl)
         {
             ServiceMethod service = new ServiceMethod();
 

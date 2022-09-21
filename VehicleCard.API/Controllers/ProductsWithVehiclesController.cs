@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq.Expressions;
 using System;
-using VehicleCard.BLL.RepositoryPattern.Interfaces;
-using VehilceCard.ENT.Models;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using VehicleCard.BLL.RepositoryPattern.Interfaces;
+using VehicleCard.MAP.MapModel;
+using VehilceCard.ENT.Models;
 
 namespace VehicleCard.API.Controllers
 {
@@ -14,16 +15,18 @@ namespace VehicleCard.API.Controllers
     {
 
         readonly IRepository<ProductsWithVehicles> _proWtVeh;
-        public ProductsWithVehiclesController(IRepository<ProductsWithVehicles> proWtVeh)
+        private readonly IMapper _mapper;
+        public ProductsWithVehiclesController(IRepository<ProductsWithVehicles> proWtVeh, IMapper mapper)
         {
             _proWtVeh = proWtVeh;
+            _mapper = mapper;
         }
 
         [Route("GetAll")]
         [HttpGet]
         public ActionResult GetAll()
         {
-            var resp = _proWtVeh.GetAll();
+            var resp = _mapper.Map<IEnumerable<ViewProductWithVehicle>>(_proWtVeh.GetAll());
             return Ok(resp);
         }
 
@@ -31,7 +34,7 @@ namespace VehicleCard.API.Controllers
         [HttpPost]
         public ActionResult GetByFilter(Expression<Func<ProductsWithVehicles, bool>> exp)
         {
-            var resp = _proWtVeh.GetByFilter(exp);
+            var resp = _mapper.Map<IEnumerable<ViewProductWithVehicle>>(_proWtVeh.GetByFilter(exp));
             return Ok(resp);
         }
 
@@ -39,27 +42,23 @@ namespace VehicleCard.API.Controllers
         [HttpPost]
         public ActionResult GetById(int id)
         {
-            var resp = _proWtVeh.GetById(id);
+            var resp = _mapper.Map<ViewProductWithVehicle>(_proWtVeh.GetById(id));
             return Ok(resp);
         }
 
         [Route("Update")]
         [HttpPost]
-        public ActionResult Update(ProductsWithVehicles pWv)
+        public ActionResult Update(ViewProductWithVehicle pWv)
         {
-            var resp = _proWtVeh.Update(pWv);
+            var resp = _proWtVeh.Update(_mapper.Map<ProductsWithVehicles>(pWv));
             return Ok(resp);
         }
 
         [Route("Create")]
         [HttpPost]
-        public ActionResult Create(List<ProductsWithVehicles> lPWv)
+        public ActionResult Create(List<ViewProductWithVehicle> lPWv)
         {
-            foreach (var item in lPWv)
-            {
-                item.Id = 0;
-                _proWtVeh.Create(item);
-            }
+            _proWtVeh.CreateRange(_mapper.Map<List<ProductsWithVehicles>>(lPWv));
             return Ok();
         }
 

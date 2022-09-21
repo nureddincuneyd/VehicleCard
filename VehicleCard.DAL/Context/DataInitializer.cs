@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VehilceCard.ENT.Models;
 
 namespace VehicleCard.DAL.Context
@@ -12,16 +7,16 @@ namespace VehicleCard.DAL.Context
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AppUser>().HasData(
-                new AppUser()
-                {
-                    Id = 1,
-                    UserMail = "NCE@netlog.com",
-                    UserFullName = "Nureddin Cüneyd ERDOĞAN",
-                    UserPass = "123",
-                    Status = true
-
-                });
+            //modelBuilder.Entity<AppUser>().HasData(
+            //    new AppUser()
+            //    {
+            //        Id = 1,
+            //        UserMail = "NCE@netlog.com",
+            //        UserFullName = "Nureddin Cüneyd ERDOĞAN",
+            //        UserPass = "123",
+            //        Status = true
+            //
+            //    });
             modelBuilder.Entity<Model>().HasData(
                 new Model()
                 {

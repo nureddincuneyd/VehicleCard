@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleCard.DAL.Context;
 
 namespace VehicleCard.DAL.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20220920221021_edit-Entity")]
+    partial class editEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,8 +118,8 @@ namespace VehicleCard.DAL.Migrations
                     b.Property<int>("AvailableCapM3")
                         .HasColumnType("int");
 
-                    b.Property<string>("OperationName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OperationNumber")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
@@ -142,6 +144,7 @@ namespace VehicleCard.DAL.Migrations
                             Id = 1,
                             AvailableCapKG = 1500,
                             AvailableCapM3 = 350,
+                            OperationNumber = 0,
                             ProductsId = 1,
                             Status = true,
                             VehiclesId = 1

@@ -6,6 +6,7 @@ using RestSharp.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using VehicleCard.MAP.MapModel;
 using VehicleCard.MVC.Models;
 using VehilceCard.ENT.Models;
 
@@ -24,10 +25,10 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetAllProduct();
-            List<Product> lProducts = new List<Product>();
+            List<ViewProduct> lProducts = new List<ViewProduct>();
             if (resp.Content != null)
             {
-                lProducts = JsonConvert.DeserializeObject<List<Product>>(resp.Content);
+                lProducts = JsonConvert.DeserializeObject<List<ViewProduct>>(resp.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -71,7 +72,7 @@ namespace VehicleCard.MVC.Controllers
             return View();
         }
 
-        public JsonResult CreateProduct(Product pro, string imgName)
+        public JsonResult CreateProduct(ViewProduct pro, string imgName)
         {
             ServiceMethod service = new ServiceMethod();
             pro.ProImgUrl = uploadPath + imgName;
@@ -90,10 +91,10 @@ namespace VehicleCard.MVC.Controllers
         {
             ServiceMethod service = new ServiceMethod();
             var resp = service.GetByIdProduct(id);
-            Product rProducts = new Product();
+            ViewProduct rProducts = new ViewProduct();
             if (resp.Content != null)
             {
-                rProducts = JsonConvert.DeserializeObject<Product>(resp.Content);
+                rProducts = JsonConvert.DeserializeObject<ViewProduct>(resp.Content);
             }
             mdlAll.Add(new ModelAll
             {
@@ -103,7 +104,7 @@ namespace VehicleCard.MVC.Controllers
             return View(mdlAll);
         }
 
-        public JsonResult UpdatePro(Product pro, string imgName)
+        public JsonResult UpdatePro(ViewProduct pro, string imgName)
         {
             ServiceMethod service = new ServiceMethod();
             if (pro.ProImgUrl != (uploadPath + imgName))
